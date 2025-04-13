@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/17</span>
+                <span class='fraction'>0/24</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/17</span>
+                <span class='fraction'>0/24</span>
             </div>
         
             
@@ -85,7 +85,15 @@
 <a name='L20'></a><a href='#L20'>20</a>
 <a name='L21'></a><a href='#L21'>21</a>
 <a name='L22'></a><a href='#L22'>22</a>
-<a name='L23'></a><a href='#L23'>23</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L23'></a><a href='#L23'>23</a>
+<a name='L24'></a><a href='#L24'>24</a>
+<a name='L25'></a><a href='#L25'>25</a>
+<a name='L26'></a><a href='#L26'>26</a>
+<a name='L27'></a><a href='#L27'>27</a>
+<a name='L28'></a><a href='#L28'>28</a>
+<a name='L29'></a><a href='#L29'>29</a>
+<a name='L30'></a><a href='#L30'>30</a>
+<a name='L31'></a><a href='#L31'>31</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -104,39 +112,55 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="branch-0 cbranch-no" title="branch not covered" >import 'dotenv/config';</span></span></span>
-<span class="cstat-no" title="statement not covered" >import express from 'express';</span>
-<span class="cstat-no" title="statement not covered" >import userRoutes from './modules/user/userRoutes';</span>
-<span class="cstat-no" title="statement not covered" >import { handleError } from './utils/handleError';</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="branch-0 cbranch-no" title="branch not covered" >import "dotenv/config";</span></span></span>
+<span class="cstat-no" title="statement not covered" >import express from "express";</span>
+<span class="cstat-no" title="statement not covered" >import userRoutes from "./modules/user/userRoutes";</span>
+<span class="cstat-no" title="statement not covered" >import { handleError } from "./middlewares/handleError";</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >const app = express();</span>
 <span class="cstat-no" title="statement not covered" >const PORT = process.env.PORT || 3000;</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >app.use(express.json());</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >app.get('/', (req, res) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >app.get("/", (req, res) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >  res.send("&lt;h1&gt;API de usuários está no ar 🚀&lt;/h1&gt;");</span>
 <span class="cstat-no" title="statement not covered" >});</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >app.use("/api", userRoutes);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >  handleError(err, req, res, next);</span>
-<span class="cstat-no" title="statement not covered" >});</span>
+<span class="cstat-no" title="statement not covered" >app.use(</span>
+<span class="cstat-no" title="statement not covered" >  (</span>
+<span class="cstat-no" title="statement not covered" >    err: any,</span>
+<span class="cstat-no" title="statement not covered" >    req: express.Request,</span>
+<span class="cstat-no" title="statement not covered" >    res: express.Response,</span>
+<span class="cstat-no" title="statement not covered" >    next: express.NextFunction</span>
+<span class="cstat-no" title="statement not covered" >  ) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    handleError(err, req, res, next);</span>
+<span class="cstat-no" title="statement not covered" >  }</span>
+<span class="cstat-no" title="statement not covered" >);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >app.listen(PORT, () =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    console.log(`Servidor rodando em http://localhost:${PORT}`)</span>
-<span class="cstat-no" title="statement not covered" >});</span></pre></td></tr></table></pre>
+<span class="cstat-no" title="statement not covered" >  console.log(`Servidor rodando em http://localhost:${PORT}`);</span>
+<span class="cstat-no" title="statement not covered" >});</span>
+&nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-04-13T21:42:10.338Z
+                at 2025-04-13T23:26:08.904Z
             </div>
         <script src="../prettify.js"></script>
         <script>
