@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { ZodError } from "zod";
-import { formatZodErrors } from "./zodUtils";
+import { formatZodErrors } from "../utils/zodUtils";
 import {
   BadRequestError,
   NotFoundError,

@@ -1,5 +1,5 @@
 import express from "express";
-import { handleError } from "../../utils/handleError";
+import { handleError } from "../../middlewares/handleError";
 import { authMiddleware } from "../../middlewares/authMiddleware";
 
 export function createTestApp() {

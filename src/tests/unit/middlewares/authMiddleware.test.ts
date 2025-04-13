@@ -44,8 +44,6 @@ describe("authMiddleware", () => {
   it("should reject access without a token", async () => {
     const response = await request(app).get("/protected");
 
-    console.log(response.body); // Log the response body for debugging
-
     expect(response.status).toBe(401);
     expect(response.body.error).toBe("Token not provided");
   });
