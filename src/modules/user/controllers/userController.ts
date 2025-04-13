@@ -52,7 +52,7 @@ export const userController = {
       try {
         const { id } = idSchema.parse(req.query);
         const { name, email } = updateUserSchema.parse(req.body);
-        const user = await userService.update(id, name, email);
+        const user = await userService.update({ id, name, email });
         res.status(200).json({ id: user.id, name: user.name, email: user.email });
       } catch (error: any) {
         handleError(res, error);

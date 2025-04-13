@@ -10,14 +10,21 @@ interface CreateUserInput {
     password: string;
 }
 
+interface UpdateUserInput {
+    id: string;
+    name?: string;
+    email?: string;
+    password?: string;
+}  
+
 export const userService = {
     create: async ({ name, email, password }: CreateUserInput) => {
         const hashedPassword = await bcrypt.hash(password, 10);
-        return await userRepository.create(name, email, hashedPassword)
+        return userRepository.create(name, email, hashedPassword)
     },
 
     listAll: async () => {
-        return await userRepository.listAll();
+        return userRepository.listAll();
     },
 
     getById: async (id: string) => {
@@ -40,7 +47,7 @@ export const userService = {
         return user;
     },
 
-    update: async (id: string, name?: string, email?: string, password?: string) => {
+    update: async ({ id, name, email, password}: UpdateUserInput) => {
         if (password) {
             const hashedPassword = await bcrypt.hash(password, 10);
             return await userRepository.update(id, name, email, hashedPassword);
@@ -50,9 +57,7 @@ export const userService = {
     },
 
     delete: async (id: string) => {
-        return prisma.user.delete({
-            where: { id },
-        });
+        return userRepository.delete(id);
     },
 
     login: async (email: string, password: string) => {
