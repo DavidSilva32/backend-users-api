@@ -15,7 +15,7 @@ app.get('/', (req, res) => {
 app.use("/api", userRoutes);
 
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
-  handleError(res, err);
+  handleError(err, req, res, next);
 });
 
 app.listen(PORT, () => {
