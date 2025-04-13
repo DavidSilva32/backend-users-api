@@ -7,7 +7,7 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction):
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    throw new UnauthorizedError("Token não fornecido");
+    throw new UnauthorizedError("Token not provided");
   }
 
   const token = authHeader.split(" ")[1];
@@ -17,6 +17,6 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction):
     req.user = decoded;
     next();
   } catch (error) {
-    return next(new UnauthorizedError("Token inválido"));
+    return next(new UnauthorizedError("Invalid token"));
   }
 };

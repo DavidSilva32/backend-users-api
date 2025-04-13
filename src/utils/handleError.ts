@@ -10,7 +10,7 @@ import {
 export function handleError(res: Response, error: any) {
   if (error instanceof ZodError) {
     return res.status(400).json({
-      error: "Dados inválidos",
+      error: "Invalid data",
       fields: formatZodErrors(error.format()),
     });
   }
@@ -24,15 +24,15 @@ export function handleError(res: Response, error: any) {
   }
 
   if (error.code === "P2002") {
-    return res.status(409).json({ error: "Email já cadastrado" });
+    return res.status(409).json({ error: "Email already registered" });
   }
 
   if (error.code === "P2025") {
-    return res.status(404).json({ error: "Usuário não encontrado" });
+    return res.status(404).json({ error: "User not found" });
   }
 
   return res.status(500).json({
-    error: "Erro interno no servidor",
+    error: "Internal server error",
     details: error.message,
   });
 }
