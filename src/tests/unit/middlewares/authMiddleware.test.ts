@@ -1,25 +1,12 @@
 import { describe, expect, it, beforeAll, afterAll } from "vitest";
 import request from "supertest";
-import express from "express";
 import { generateToken } from "../../../lib/jwt";
-import { authMiddleware } from "../../../middlewares/authMiddleware";
 import { PrismaClient } from "@prisma/client";
-import { handleError } from "../../../utils/handleError";
+import { createTestApp } from "../../utils/createTestApp";
 
 const prisma = new PrismaClient();
 
-const app = express();
-app.use(express.json());
-
-app.get("/protected", authMiddleware, (req, res) => {
-    const user = req.user;
-  res.status(200).json({ message: "Access granted", user });
-  console.log({user}); // Log the response body for debugging
-});
-
-app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
-  handleError(err, req, res, next);
-});
+const app = createTestApp();
 
 let token: string;
 let userId: string;
