@@ -8,7 +8,7 @@ export default defineConfig({
     setupFiles: "./src/tests/setup.ts",
     include: ["src/tests/**/*.test.ts"],
     coverage: {
-      reporter: ['text', 'html'],
+      reporter: ['text', 'lcov'],
     },
   },
   resolve: {
