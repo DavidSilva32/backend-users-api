@@ -1,9 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { userRepository } from "../../../modules/user/repositories/userRepository";
-import { prisma } from "../../../lib/prisma";
-import type { User } from "@prisma/client";
+import { userRepository } from "../../../repositories/userRepository";
+import { prisma } from "@/lib/prisma";
+import { createFakeUser } from "../../utils/mock";
 
-vi.mock("../../../lib/prisma", () => ({
+vi.mock("@/lib/prisma", () => ({
   prisma: {
     user: {
       create: vi.fn(),
@@ -14,16 +14,6 @@ vi.mock("../../../lib/prisma", () => ({
     },
   },
 }));
-
-const createFakeUser = (overrides?: Partial<User>): User => ({
-  id: "user-123",
-  email: "teste@exemplo.com",
-  name: "Teste",
-  password: "senha123",
-  createdAt: new Date(),
-  updatedAt: new Date(),
-  ...overrides,
-});
 
 describe("userRepository", () => {
   beforeEach(() => {

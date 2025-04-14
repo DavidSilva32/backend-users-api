@@ -1,6 +1,6 @@
 import "dotenv/config";
 import express from "express";
-import userRoutes from "./modules/user/userRoutes";
+import userRoutes from "./routes/userRoutes";
 import { handleError } from "./middlewares/handleError";
 
 const app = express();
