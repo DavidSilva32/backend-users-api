@@ -45,7 +45,7 @@ export const userController: Record<string, ControllerMethod> = {
   delete: async (req, res) => {
     const { id } = idSchema.parse(req.query);
     await userService.delete(id);
-    res.status(200).json({ message: "Usuário deletado com sucesso" });
+    res.status(200).json({ message: "User deleted successfully" });
   },
 
   login: async (req, res) => {
