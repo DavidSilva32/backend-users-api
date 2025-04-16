@@ -31,7 +31,7 @@ export const userService = {
     const user = await userRepository.getById(id);
 
     if (!user) {
-      throw new NotFoundError("Usuário não encontrado");
+      throw new NotFoundError("User not found");
     }
 
     return user;
@@ -41,7 +41,7 @@ export const userService = {
     const user = await userRepository.getById(id);
 
     if (!user) {
-      throw new NotFoundError("Usuário não encontrado");
+      throw new NotFoundError("User not found");
     }
 
     return user;
@@ -74,7 +74,7 @@ export const userService = {
       user && (await bcrypt.compare(password, user.password));
 
     if (!user || !isPasswordValid) {
-      throw new UnauthorizedError("Email ou senha inválidos");
+      throw new UnauthorizedError("Invalid credentials");
     }
 
     const token = generateToken({ id: user.id, email: user.email });

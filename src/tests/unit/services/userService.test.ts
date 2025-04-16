@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import bcrypt from "bcrypt";
 
 import { userRepository } from "../../../repositories/userRepository";
 import { createFakeUser } from "../../utils/mock";
@@ -32,10 +33,10 @@ describe("UserService", () => {
         password: fakeUser.password,
       });
 
-      expect(userRepository.create).toHaveBeenCalledWith(
+      expect(userRepository.create).toHaveBeenCalledExactlyOnceWith(
         fakeUser.name,
         fakeUser.email,
-        expect.any(String) // the password should be a hash, so we can't compare it directly with 'senha123'
+        expect.any(String)
       );
       expect(user).toEqual(fakeUser);
     });
@@ -55,7 +56,7 @@ describe("UserService", () => {
         })
       ).rejects.toThrow("User already exists");
 
-      expect(userRepository.create).toHaveBeenCalledWith(
+      expect(userRepository.create).toHaveBeenCalledExactlyOnceWith(
         fakeUser.name,
         fakeUser.email,
         expect.any(String)
@@ -83,7 +84,7 @@ describe("UserService", () => {
         password: updatedUser.password,
       });
 
-      expect(userRepository.update).toHaveBeenCalledWith(
+      expect(userRepository.update).toHaveBeenCalledExactlyOnceWith(
         fakeUser.id,
         updatedUser.name,
         updatedUser.email,
@@ -108,13 +109,13 @@ describe("UserService", () => {
         email: updatedUser.email,
       });
 
-      expect(userRepository.update).toHaveBeenCalledWith(
+      expect(userRepository.update).toHaveBeenCalledExactlyOnceWith(
         fakeUser.id,
         updatedUser.name,
-        updatedUser.email,
+        updatedUser.email
       );
       expect(user).toEqual(updatedUser);
-    })
+    });
 
     it("should throw an error if user not found", async () => {
       const fakeUser = createFakeUser();
@@ -151,7 +152,9 @@ describe("UserService", () => {
 
       const user = await userService.delete(fakeUser.id);
 
-      expect(userRepository.delete).toHaveBeenCalledWith(fakeUser.id);
+      expect(userRepository.delete).toHaveBeenCalledExactlyOnceWith(
+        fakeUser.id
+      );
       expect(user).toEqual(fakeUser);
     });
 
@@ -166,9 +169,9 @@ describe("UserService", () => {
         "User not found"
       );
 
-      expect(userRepository.delete).toHaveBeenCalledWith(fakeUser.id);
-
-      expect(userRepository.delete).toHaveBeenCalledTimes(1);
+      expect(userRepository.delete).toHaveBeenCalledExactlyOnceWith(
+        fakeUser.id
+      );
     });
   });
 
@@ -180,7 +183,7 @@ describe("UserService", () => {
 
       const users = await userService.listAll();
 
-      expect(userRepository.listAll).toHaveBeenCalledTimes(1);
+      expect(userRepository.listAll).toHaveBeenCalledExactlyOnceWith();
       expect(users).toEqual(fakeUsers);
     });
 
@@ -189,7 +192,7 @@ describe("UserService", () => {
 
       const user = await userService.listAll();
 
-      expect(userRepository.listAll).toHaveBeenCalledTimes(1);
+      expect(userRepository.listAll).toHaveBeenCalledExactlyOnceWith();
       expect(user).toEqual([]);
     });
   });
@@ -211,13 +214,86 @@ describe("UserService", () => {
       (userRepository.getById as any).mockResolvedValue(null);
 
       await expect(userService.getById(fakeUser.id)).rejects.toThrow(
-        "Usuário não encontrado"
+        "User not found"
       );
 
       expect(userRepository.getById).toHaveBeenCalledWith(fakeUser.id);
       expect(userRepository.getById).toHaveBeenCalledTimes(1);
-    })
+    });
   });
 
-  // describe("getProfile", () => {})
+  describe("getProfile", () => {
+    it("should get a user profile", async () => {
+      const fakeUser = createFakeUser();
+
+      (userRepository.getById as any).mockResolvedValue(fakeUser);
+
+      const user = await userService.getProfile(fakeUser.id);
+
+      expect(userRepository.getById).toHaveBeenCalledExactlyOnceWith(
+        fakeUser.id
+      );
+      expect(user).toEqual(fakeUser);
+    });
+
+    it("should throw an error if user not found", async () => {
+      const fakeUser = createFakeUser();
+
+      (userRepository.getById as any).mockResolvedValue(null);
+
+      await expect(userService.getProfile(fakeUser.id)).rejects.toThrow(
+        "User not found"
+      );
+
+      expect(userRepository.getById).toHaveBeenCalledExactlyOnceWith(
+        fakeUser.id
+      );
+    });
+  });
+
+  describe("login", () => {
+    it("should login a user", async () => {
+      const fakeUser = createFakeUser({ password: "$2b$10$coisadobcrypthash" });
+
+      vi.spyOn(userRepository, "login").mockResolvedValue(fakeUser);
+      vi.spyOn(bcrypt, "compare").mockResolvedValue(true as unknown as void);
+
+      const result = await userService.login(fakeUser.email, "senha123");
+
+      expect(userRepository.login).toHaveBeenCalledExactlyOnceWith(
+        fakeUser.email
+      );
+      expect(result).toHaveProperty("token");
+      expect(typeof result.token).toBe("string");
+    });
+
+    it("should throw an error if user not found", async () => {
+      const fakeUser = createFakeUser();
+
+      (userRepository.login as any).mockResolvedValue(null);
+
+      await expect(
+        userService.login(fakeUser.email, fakeUser.password)
+      ).rejects.toThrow("Invalid credentials");
+
+      expect(userRepository.login).toHaveBeenCalledExactlyOnceWith(
+        fakeUser.email
+      );
+    });
+
+    it("should throw an error if password is invalid", async () => {
+      const fakeUser = createFakeUser({ password: "$2b$10$coisadobcrypthash" });
+
+      vi.spyOn(userRepository, "login").mockResolvedValue(fakeUser);
+      vi.spyOn(bcrypt, "compare").mockResolvedValue(false as unknown as void);
+
+      await expect(
+        userService.login(fakeUser.email, "senha123")
+      ).rejects.toThrow("Invalid credentials");
+
+      expect(userRepository.login).toHaveBeenCalledExactlyOnceWith(
+        fakeUser.email
+      );
+    });
+  });
 });

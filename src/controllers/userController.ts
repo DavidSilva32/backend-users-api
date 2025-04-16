@@ -6,7 +6,7 @@ import {
   updateUserSchema,
 } from "../schemas/userSchema";
 import { userService } from "../services/userService";
-import { formatUser } from "../../../utils/formatUser";
+import { formatUser } from "@/utils/formatUser";
 
 type ControllerMethod = (req: Request, res: Response) => Promise<void>;
 
