@@ -7,7 +7,6 @@ import {
   UnauthorizedError,
 } from "../errors/customErrors";
 
-// Agora é middleware de erro padrão do Express
 export function handleError(
   err: any,
   req: Request,
