@@ -45,7 +45,7 @@ describe("authMiddleware", () => {
     const response = await request(app).get("/protected");
 
     expect(response.status).toBe(401);
-    expect(response.body.error).toBe("Token not provided");
+    expect(response.body.message).toBe("Token not provided");
   });
 
   it("should reject access with an invalid token", async () => {
@@ -54,6 +54,6 @@ describe("authMiddleware", () => {
       .set("Authorization", "Bearer invalid_token");
 
     expect(response.status).toBe(401);
-    expect(response.body.error).toBe("Invalid token");
+    expect(response.body.message).toBe("Invalid token");
   });
 });
