@@ -6,6 +6,11 @@ import { formatUser } from "@/utils/formatUser";
 import { beforeEach } from "node:test";
 import { describe, expect, it, vi } from "vitest";
 
+import { sendSuccess } from "@/utils/successResponse";
+vi.mock("@/utils/successResponse", () => ({
+  sendSuccess: vi.fn(),
+}));
+
 vi.mock("@/services/userService", () => ({
   userService: {
     create: vi.fn(),
@@ -22,6 +27,7 @@ describe("UserController", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
+
   describe("getById", () => {
     it("should return a user by id", async () => {
       const fakeUser = createFakeUser();
@@ -35,8 +41,11 @@ describe("UserController", () => {
       await userController.getById(req, res);
 
       expect(userService.getById).toHaveBeenCalledExactlyOnceWith(fakeUser.id);
-      expect(res.status).toHaveBeenCalledWith(200);
-      expect(res.json).toHaveBeenCalledWith(formatUser(fakeUser));
+      expect(sendSuccess).toHaveBeenCalledWith(
+        res,
+        "User fetched successfully",
+        formatUser(fakeUser)
+      );
     });
 
     it("should throw an error if id is invalid", async () => {
@@ -49,6 +58,7 @@ describe("UserController", () => {
       );
     });
   });
+
   describe("create", () => {
     it("should create a new user and return 201", async () => {
       const fakeUser = createFakeUser();
@@ -70,12 +80,11 @@ describe("UserController", () => {
         password: fakeUser.password,
       });
 
-      expect(res.status).toHaveBeenCalledWith(201);
-      expect(res.json).toHaveBeenCalledWith({
-        id: fakeUser.id,
-        name: fakeUser.name,
-        email: fakeUser.email,
-      });
+      expect(sendSuccess).toHaveBeenCalledWith(
+        res,
+        "User created successfully",
+        formatUser(fakeUser)
+      );
     });
   });
 
@@ -101,12 +110,11 @@ describe("UserController", () => {
         ...updatedData,
       });
 
-      expect(res.status).toHaveBeenCalledWith(200);
-      expect(res.json).toHaveBeenCalledWith({
-        id: fakeUser.id,
-        name: updatedData.name,
-        email: updatedData.email,
-      });
+      expect(sendSuccess).toHaveBeenCalledWith(
+        res,
+        "User updated successfully",
+        { id: fakeUser.id, name: updatedData.name, email: updatedData.email }
+      );
     });
   });
 
@@ -123,10 +131,10 @@ describe("UserController", () => {
       await userController.delete(req, res);
 
       expect(userService.delete).toHaveBeenCalledWith(fakeUser.id);
-      expect(res.status).toHaveBeenCalledWith(200);
-      expect(res.json).toHaveBeenCalledWith({
-        message: "User deleted successfully",
-      });
+      expect(sendSuccess).toHaveBeenCalledWith(
+        res,
+        "User deleted successfully"
+      );
     });
   });
 
@@ -142,8 +150,9 @@ describe("UserController", () => {
 
       expect(userService.listAll).toHaveBeenCalledTimes(1);
 
-      expect(res.status).toHaveBeenCalledWith(200);
-      expect(res.json).toHaveBeenCalledWith(
+      expect(sendSuccess).toHaveBeenCalledWith(
+        res,
+        "Users fetched successfully",
         fakeUsers.map((user) => ({
           id: user.id,
           name: user.name,
@@ -166,12 +175,15 @@ describe("UserController", () => {
       await userController.getProfile(req, res);
 
       expect(userService.getProfile).toHaveBeenCalledWith(fakeUser.id);
-      expect(res.status).toHaveBeenCalledWith(200);
-      expect(res.json).toHaveBeenCalledWith({
-        id: fakeUser.id,
-        name: fakeUser.name,
-        email: fakeUser.email,
-      });
+      expect(sendSuccess).toHaveBeenCalledWith(
+        res,
+        "Profile fetched successfully",
+        {
+          id: fakeUser.id,
+          name: fakeUser.name,
+          email: fakeUser.email,
+        }
+      );
     });
   });
 
@@ -196,8 +208,7 @@ describe("UserController", () => {
         credentials.email,
         credentials.password
       );
-      expect(res.status).toHaveBeenCalledWith(200);
-      expect(res.json).toHaveBeenCalledWith({ token });
+      expect(sendSuccess).toHaveBeenCalledWith(res, "Login successful", { token });
     });
   });
 });
