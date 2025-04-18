@@ -1,10 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 import { verifyToken } from "@/lib/jwt";
 import { UnauthorizedError, ForbiddenError } from "../errors/customErrors";
-import { AuthTokenPayload } from "../types/auth";
 
-// Middleware para autenticação e verificação de roles
-export const authMiddleware = (requiredRole?: "USER" | "ADMIN") => {
+type Role = "USER" | "ADMIN"
+export const authMiddleware = (requiredRoles?: Role | Role[]) => {
   return (req: Request, res: Response, next: NextFunction): void => {
     try {
       const authHeader = req.headers.authorization;
@@ -18,13 +17,14 @@ export const authMiddleware = (requiredRole?: "USER" | "ADMIN") => {
       const decoded = verifyToken(token);
       req.user = decoded;
 
-      // Verificando o role se necessário
-      if (requiredRole && req.user.role !== requiredRole) {
-        return next(
-          new ForbiddenError(
-            "You do not have permission to access this resource"
-          )
-        );
+      // Verificando se o role do usuário está entre os permitidos
+      if (requiredRoles) {
+        const rolesArray = Array.isArray(requiredRoles) ? requiredRoles : [requiredRoles];
+        if (!rolesArray.includes(req.user.role)) {
+          return next(
+            new ForbiddenError("You do not have permission to access this resource")
+          );
+        }
       }
 
       next();

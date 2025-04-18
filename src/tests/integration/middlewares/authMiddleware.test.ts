@@ -59,15 +59,13 @@ describe("authMiddleware", () => {
     expect(response.status).not.toBe(401);
   });
 
-  it("should reject USER route access with ADMIN token", async () => {
+  it("should allow USER route access with ADMIN token", async () => {
     const response = await request(app)
       .get("/user/profile")
       .set("Authorization", `Bearer ${adminToken}`);
 
-    expect(response.status).toBe(403);
-    expect(response.body.message).toBe(
-      "You do not have permission to access this resource"
-    );
+    expect(response.status).not.toBe(403);
+    expect(response.status).not.toBe(401);
   });
 
   it("should allow access to ADMIN route with valid token", async () => {
