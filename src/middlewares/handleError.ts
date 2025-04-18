@@ -3,6 +3,7 @@ import { ZodError } from "zod";
 import { formatZodErrors } from "../utils/zodUtils";
 import {
   BadRequestError,
+  ForbiddenError,
   NotFoundError,
   UnauthorizedError,
 } from "../errors/customErrors";
@@ -23,7 +24,8 @@ export function handleError(
   if (
     err instanceof BadRequestError ||
     err instanceof NotFoundError ||
-    err instanceof UnauthorizedError
+    err instanceof UnauthorizedError ||
+    err instanceof ForbiddenError
   ) {
     return res.status(err.statusCode).json({ message: err.message });
   }

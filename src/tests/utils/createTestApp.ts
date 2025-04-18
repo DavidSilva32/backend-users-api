@@ -1,14 +1,12 @@
 import express from "express";
 import { handleError } from "../../middlewares/handleError";
-import { authMiddleware } from "../../middlewares/authMiddleware";
+import userRoutes from "@/routes/userRoutes";
 
 export function createTestApp() {
   const app = express();
   app.use(express.json());
 
-  app.get("/protected", authMiddleware, (req, res) => {
-    res.status(200).json({ message: "Access granted", user: req.user });
-  });
+  app.use(userRoutes);
 
   app.use(
     (

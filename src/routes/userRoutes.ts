@@ -7,10 +7,10 @@ const router = express.Router();
 
 router.post("/user", userController.create);
 router.post("/login", userController.login);
-router.get("/user/profile", authMiddleware, userController.getProfile);
-router.get("/users", authMiddleware, userController.listAll);
-router.get("/user", authMiddleware, userController.getById);
-router.put("/user", authMiddleware, userController.update);
-router.delete("/user", authMiddleware, userController.delete);
+router.get("/user/profile", authMiddleware("USER"), userController.getProfile);
+router.get("/users", authMiddleware("ADMIN"), userController.listAll);
+router.get("/user", authMiddleware("USER"), userController.getById);
+router.put("/user", authMiddleware("USER"), userController.update);
+router.delete("/user", authMiddleware("ADMIN"), userController.delete);
 
 export default router;
