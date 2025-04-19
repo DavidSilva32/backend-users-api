@@ -15,7 +15,6 @@ export const createFakeUser = (overrides?: Partial<User>): User => ({
 });
 
 type PartialRequest = Partial<Request>;
-// type PartialResponse = Partial<Response>;
 
 export function createMockReqRes(reqOverrides: PartialRequest = {}) {
   const req = {

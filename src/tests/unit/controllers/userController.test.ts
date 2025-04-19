@@ -140,7 +140,7 @@ describe("UserController", () => {
 
   describe("listAll", () => {
     it("should return a list of users", async () => {
-      const fakeUsers = [createFakeUser(), createFakeUser(), createFakeUser()]; // Crie uma lista de usuários fake
+      const fakeUsers = [createFakeUser(), createFakeUser(), createFakeUser()];
 
       const { req, res } = createMockReqRes();
 

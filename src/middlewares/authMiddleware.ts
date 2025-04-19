@@ -17,7 +17,6 @@ export const authMiddleware = (requiredRoles?: Role | Role[]) => {
       const decoded = verifyToken(token);
       req.user = decoded;
 
-      // Verificando se o role do usuário está entre os permitidos
       if (requiredRoles) {
         const rolesArray = Array.isArray(requiredRoles) ? requiredRoles : [requiredRoles];
         if (!rolesArray.includes(req.user.role)) {
