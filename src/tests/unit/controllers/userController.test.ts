@@ -167,7 +167,7 @@ describe("UserController", () => {
       const fakeUser = createFakeUser();
 
       const { req, res } = createMockReqRes({
-        user: { id: fakeUser.id, email: fakeUser.email },
+        user: { id: fakeUser.id, email: fakeUser.email, role: fakeUser.role },
       });
 
       vi.mocked(userService.getProfile).mockResolvedValue(fakeUser);

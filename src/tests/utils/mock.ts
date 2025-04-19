@@ -8,6 +8,7 @@ export const createFakeUser = (overrides?: Partial<User>): User => ({
   email: "teste@exemplo.com",
   name: "Teste",
   password: "senha123",
+  role: "USER",
   createdAt: new Date(),
   updatedAt: new Date(),
   ...overrides,

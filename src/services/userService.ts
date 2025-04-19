@@ -77,7 +77,7 @@ export const userService = {
       throw new UnauthorizedError("Invalid credentials");
     }
 
-    const token = generateToken({ id: user.id, email: user.email });
+    const token = generateToken({ id: user.id, email: user.email, role: user.role });
     return { token };
   },
 };
