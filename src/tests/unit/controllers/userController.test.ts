@@ -59,7 +59,7 @@ describe("UserController", () => {
       });
 
       await expect(userController.getById(req, res)).rejects.toThrow(
-        "ID inválido"
+        "Invalid ID"
       );
     });
   });
