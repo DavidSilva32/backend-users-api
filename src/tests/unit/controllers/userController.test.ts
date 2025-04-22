@@ -44,7 +44,12 @@ describe("UserController", () => {
       expect(sendSuccess).toHaveBeenCalledWith(
         res,
         "User fetched successfully",
-        formatUser(fakeUser)
+        {
+          id: fakeUser.id,
+          name: fakeUser.name,
+          email: fakeUser.email,
+          role: fakeUser.role,
+        }
       );
     });
 
@@ -83,7 +88,12 @@ describe("UserController", () => {
       expect(sendSuccess).toHaveBeenCalledWith(
         res,
         "User created successfully",
-        formatUser(fakeUser)
+        {
+          id: fakeUser.id,
+          name: fakeUser.name,
+          email: fakeUser.email,
+          role: fakeUser.role,
+        }
       );
     });
   });
@@ -113,7 +123,12 @@ describe("UserController", () => {
       expect(sendSuccess).toHaveBeenCalledWith(
         res,
         "User updated successfully",
-        { id: fakeUser.id, name: updatedData.name, email: updatedData.email }
+        {
+          id: fakeUser.id,
+          name: updatedData.name,
+          email: updatedData.email,
+          role: fakeUser.role,
+        }
       );
     });
   });
@@ -157,6 +172,7 @@ describe("UserController", () => {
           id: user.id,
           name: user.name,
           email: user.email,
+          role: user.role,
         }))
       );
     });
@@ -182,6 +198,7 @@ describe("UserController", () => {
           id: fakeUser.id,
           name: fakeUser.name,
           email: fakeUser.email,
+          role: fakeUser.role,
         }
       );
     });
@@ -208,7 +225,9 @@ describe("UserController", () => {
         credentials.email,
         credentials.password
       );
-      expect(sendSuccess).toHaveBeenCalledWith(res, "Login successful", { token });
+      expect(sendSuccess).toHaveBeenCalledWith(res, "Login successful", {
+        token,
+      });
     });
   });
 });
