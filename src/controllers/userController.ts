@@ -38,8 +38,8 @@ export const userController: Record<string, ControllerMethod> = {
 
   update: async (req, res) => {
     const { id } = idSchema.parse(req.query);
-    const { name, email } = updateUserSchema.parse(req.body);
-    const user = await userService.update({ id, name, email });
+    const { name, email, password } = updateUserSchema.parse(req.body);
+    const user = await userService.update({ id, name, email, password });
     sendSuccess(res, "User updated successfully", formatUser(user));
   },
 
